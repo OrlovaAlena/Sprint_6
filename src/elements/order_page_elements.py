@@ -20,3 +20,10 @@ class LocatorsOrder:
     CONFIRM_ORDER_BUTTON = By.XPATH, './/button[text()="Да"]'
 
     SUCCESS_ORDER_MODAL = By.XPATH, './/div[contains(@class, "Order_Modal")]'
+
+    # elements with options
+    METRO_PART_1 = '//*[@class ="select-search__select"]//*[text()="'
+    RENTAL_TIME_PART_1 = './/div[@class="Dropdown-option"][text()="'
+    COLOR_PART_1 = './/label[contains(@class,  "Checkbox")][text()="'
+
+    END = '"]'

@@ -3,10 +3,10 @@ import pytest
 from selenium.webdriver.firefox import webdriver
 
 from pages.base_page import BasePage
+from pages.header import Header
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
-from src.Elements.main_page_elements import LocatorsMain
-from src.Elements.order_page_elements import LocatorsOrder
+from src.elements.main_page_elements import LocatorsMain
 from src.data import Data
 
 
@@ -18,13 +18,14 @@ class TestOrderPage:
         cls.driver.get(BasePage.URL)
         cls.page = OrderPage(cls.driver)
         cls.main_page = MainPage(cls.driver)
+        cls.header = Header(cls.driver)
 
     @allure.title("Проверка основного флоу заказа с использованием двух наборов тестовых данных")
     @pytest.mark.parametrize(
-        'button, name, last_name, address, metro, phone_number, delivery_date, rental_time, color, comment',
+        'button, name, last_name, address, metro_station, phone_number, delivery_date, rental_time, color, comment',
         [
             [
-                LocatorsMain.ORDER_BUTTON_HEADER, 'Кот', 'Бегемот', 'Садовая, 302-бис кв.50', 'Маяковская',
+                Header.ORDER_BUTTON_HEADER, 'Кот', 'Бегемот', 'Садовая, 302-бис кв.50', 'Маяковская',
                 '88005553535', '22.04.1935', 'сутки', Data.COLOR_BLACK,
                 'Единственно, что может спасти смертельно раненного кота, — это глоток бензина'
             ],
@@ -34,27 +35,28 @@ class TestOrderPage:
             ],
         ]
     )
-    def test_make_order(self, button, name, last_name, address, metro, phone_number, delivery_date, rental_time, color,
-                        comment):
-        self.page.navigate(BasePage.URL)
+    def test_make_order(self, button, name, last_name, address, metro_station, phone_number, delivery_date, rental_time,
+                        color, comment):
+        self.main_page.open_page()
         self.page.click_order_button(button)
-        self.page.wait_for_url(OrderPage.URL)
-        self.page.fill_input(LocatorsOrder.NAME_INPUT, name)
-        self.page.fill_input(LocatorsOrder.LAST_NAME_INPUT, last_name)
-        self.page.fill_input(LocatorsOrder.ADDRESS_INPUT, address)
-        self.page.fill_input(LocatorsOrder.METRO_INPUT, metro)
-        self.page.choose_metro_station(metro)
-        self.page.fill_input(LocatorsOrder.TELEPHONE_NUMBER_INPUT, phone_number)
-        self.page.click_element(LocatorsOrder.NEXT_STEP_ORDER_BUTTON)
+        self.page.wait_for_order_page()
+        self.page.fill_name(name)
+        self.page.fill_last_name(last_name)
+        self.page.fill_address(address)
+        self.page.fill_metro(metro_station)
+        self.page.find_metro_station(metro_station)
+        self.page.choose_metro_station(metro_station)
+        self.page.fill_telephone_number(phone_number)
+        self.page.click_next_step_button()
 
-        self.page.fill_input(LocatorsOrder.DATE_INPUT, delivery_date)
-        self.page.click_element(LocatorsOrder.RENTAL_TIME_FORM)
-        self.page.choose_rental_time(rental_time)
-        self.page.choose_scooter_color(color)
-        self.page.fill_input(LocatorsOrder.COMMENT_INPUT, comment)
-        self.page.click_element(LocatorsOrder.COMPLETE_ORDER_BUTTON)
-        self.page.click_element(LocatorsOrder.CONFIRM_ORDER_BUTTON)
-        assert 'Заказ оформлен' in self.page.get_text(LocatorsOrder.SUCCESS_ORDER_MODAL)
+        self.page.fill_delivery_date(delivery_date)
+        self.page.click_rental_time()
+        self.page.select_rental_time(rental_time)
+        self.page.select_scooter_color(color)
+        self.page.fill_comment(comment)
+        self.page.complete_order()
+        self.page.confirm_order()
+        assert 'Заказ оформлен' in self.page.get_text_confirm_modal()
 
     @classmethod
     def teardown_class(cls):

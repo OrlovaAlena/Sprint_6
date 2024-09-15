@@ -19,3 +19,5 @@ class Data:
 
     COLOR_BLACK = 'чёрный жемчуг'
     COLOR_GRAY = 'серая безысходность'
+
+    DZEN_URL = 'https://dzen.ru/?yredirect=true'

@@ -12,6 +12,9 @@ class BasePage:
     def navigate(self, url):
         self.driver.get(url)
 
+    def open_page(self):
+        self.driver.get(self.URL)
+
     def switch_window(self):
         self.driver.switch_to.window(self.driver.window_handles[1])
 

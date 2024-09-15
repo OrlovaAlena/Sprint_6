@@ -1,10 +1,10 @@
 import allure
 from pages.base_page import BasePage
+from src.data import Data
+from src.elements.main_page_elements import LocatorsMain
 
 
 class MainPage(BasePage):
-
-    DZEN_URL = 'https://dzen.ru/?yredirect=true'
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -22,7 +22,14 @@ class MainPage(BasePage):
         self.click_element(locator_question)
         self.wait_for_visible(locator_answer)
 
-    @allure.title("Переключение на открывшуюся вкладку")
-    def switch(self, url):
+    @allure.step("Переключение на открывшуюся вкладку")
+    def switch(self):
         self.switch_window()
-        self.wait_for_url(url)
+
+    @allure.step("Ожидание страницы Дзена")
+    def wait_to_dzen(self):
+        self.wait_for_url(Data.DZEN_URL)
+
+    @allure.step("Прокрутка страницы до блока ответов и вопросов")
+    def scroll_page_to_qa_list(self):
+        self.scroll_page(LocatorsMain.QA_LIST)
