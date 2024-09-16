@@ -1,8 +1,11 @@
 from selenium.webdriver.common.by import By
 
+from pages.header import Header
+from src.data import Data
+from src.elements.main_page_elements import LocatorsMain
+
 
 class LocatorsOrder:
-
     # personal data
     NAME_INPUT = By.XPATH, './/input[contains(@placeholder, "Имя")]'
     LAST_NAME_INPUT = By.XPATH, './/input[contains(@placeholder, "Фамилия")]'
@@ -27,3 +30,15 @@ class LocatorsOrder:
     COLOR_PART_1 = './/label[contains(@class,  "Checkbox")][text()="'
 
     END = '"]'
+
+    ORDER_TEST_DATA = [
+        [
+            Header.ORDER_BUTTON_HEADER, 'Кот', 'Бегемот', 'Садовая, 302-бис кв.50', 'Маяковская',
+            '88005553535', '22.04.1935', 'сутки', Data.COLOR_BLACK,
+            'Единственно, что может спасти смертельно раненного кота, — это глоток бензина'
+        ],
+        [
+            LocatorsMain.ORDER_BUTTON_PAGE, 'Иван', 'Васильевич', 'Новокузнецкая улица дом 13', 'Новокузнецкая',
+            '+7999666362', '17.09.1973', 'трое суток', Data.COLOR_GRAY, ''
+        ],
+    ]

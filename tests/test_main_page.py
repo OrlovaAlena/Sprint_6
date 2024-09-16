@@ -2,7 +2,6 @@ import pytest
 from selenium.webdriver.firefox import webdriver
 import allure
 
-from pages.base_page import BasePage
 from pages.header import Header
 from pages.main_page import MainPage
 from src.elements.main_page_elements import LocatorsMain
@@ -14,7 +13,6 @@ class TestMainPage:
     @classmethod
     def setup_class(cls):
         cls.driver = webdriver.WebDriver()
-        cls.driver.get(BasePage.URL)
         cls.page = MainPage(cls.driver)
         cls.header = Header(cls.driver)
 
@@ -24,7 +22,7 @@ class TestMainPage:
         LocatorsMain.MAIN_PAGE_TEST_DATA
     )
     def test_price_question_form(self, question, answer, expected_answer):
-        self.page.scroll_page_to_qa_list()
+        self.page.open_page()
         self.page.qa_list_question_click(question, answer)
         self.page.check_element_is_enabled(answer)
         assert self.page.check_element_has_text(answer) == expected_answer
@@ -42,7 +40,7 @@ class TestMainPage:
         self.page.open_page()
         self.header.click_order_button()
         self.header.click_to_scooter_logo()
-        assert self.page.get_current_url() == BasePage.URL
+        assert self.page.get_current_url() == MainPage.URL
 
     @classmethod
     def teardown_class(cls):

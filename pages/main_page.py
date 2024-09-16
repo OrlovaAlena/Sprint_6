@@ -19,6 +19,7 @@ class MainPage(BasePage):
 
     @allure.step("Кликнуть на элемент")
     def qa_list_question_click(self, locator_question, locator_answer):
+        self.scroll_page_to_qa_list()
         self.click_element(locator_question)
         self.wait_for_visible(locator_answer)
 

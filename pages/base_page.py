@@ -28,6 +28,7 @@ class BasePage:
         return WebDriverWait(self.driver, 5).until(expected_conditions.presence_of_element_located(locator))
 
     def click_element(self, locator):
+        self.wait_for_visible(locator)
         self.find_element(locator).click()
 
     def wait_for_visible(self, locator):
